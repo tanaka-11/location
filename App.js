@@ -43,13 +43,8 @@ export default function App() {
 
   console.log(minhaLocalizacao);
 
-  // State que define a localização no MapView
-  const [localizacao, setLocalizacao] = useState({
-    latitude: -33.867886,
-    longitude: -63.987,
-    latitudeDelta: 0.8,
-    longitudeDelta: 0.8,
-  });
+  // State que define a localização no MapView. Começando nulo, pois o usuario ainda não acionou o botão de "marcarLocal"
+  const [localizacao, setLocalizacao] = useState(null);
 
   // Coordenadas fixas para o componente "mapview"
   const regiaoInicial = {
@@ -96,12 +91,14 @@ export default function App() {
             maxZoomLevel={30} // Zoom maximo para usuario
             minZoomLevel={5} // Zoom minimo para usuario
           >
-            <Marker
-              coordinate={localizacao} // Coordenada
-              title="Você está aqui!" // Titulo ao clicar no marker
-              pinColor="blue" // Cor do pin
-              draggable // Arrastavel
-            />
+            {localizacao && (
+              <Marker
+                coordinate={localizacao} // Coordenada
+                title="Você está aqui!" // Titulo ao clicar no marker
+                pinColor="blue" // Cor do pin
+                draggable // Arrastavel
+              />
+            )}
           </MapView>
         </View>
       </View>
