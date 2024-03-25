@@ -41,34 +41,28 @@ export default function App() {
     obterLocalizacao();
   }, []);
 
-  console.log(minhaLocalizacao);
-
   // State que define a localização no MapView. Começando nulo, pois o usuario ainda não acionou o botão de "marcarLocal"
   const [localizacao, setLocalizacao] = useState(null);
 
   // Coordenadas fixas para o componente "mapview"
   const regiaoInicial = {
     // Brasil
-    // latitude: -10,
-    // longitude: -55,
-
-    // São Paulo
-    latitude: -23.5489,
-    longitude: -46.6388,
+    latitude: -10,
+    longitude: -55,
 
     // Zoom no Mapa, quanto menor o numero mais proxima da localização escolhida e quanto maior o numero mais longe da localização escolhida.
     latitudeDelta: 0.8,
     longitudeDelta: 0.8,
   };
 
-  // Função com parametro de evento(onPress)
-  const marcarLocal = (event) => {
+  // Função de coordenadas na posição do usuario
+  const marcarLocal = () => {
     setLocalizacao({
-      ...localizacao, // Capturando os deltas com o spread
-
-      // Capturando novos dados de coordenadas a partir do evento(onPress)
-      latitude: event.nativeEvent.coordinate.latitude,
-      longitude: event.nativeEvent.coordinate.longitude,
+      // Capturando novos dados de coordenadas na posição do usuario
+      latitude: minhaLocalizacao.coords.latitude,
+      longitude: minhaLocalizacao.coords.longitude,
+      latitudeDelta: 0.6,
+      longitudeDelta: 0.6,
     });
   };
 
@@ -86,8 +80,8 @@ export default function App() {
         <View style={estilos.viewMapa}>
           <MapView
             style={estilos.mapa}
-            initialRegion={regiaoInicial} // Regiao Inicial
-            mapType="hybrid" // Tipo do mapa
+            region={localizacao ?? regiaoInicial} // Região com condional de coalescência nula(Um ou Outro)
+            mapType="standard" // Tipo do mapa
             maxZoomLevel={30} // Zoom maximo para usuario
             minZoomLevel={5} // Zoom minimo para usuario
           >
