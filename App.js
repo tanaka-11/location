@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, View } from "react-native";
+import { Image, StatusBar, StyleSheet, View } from "react-native";
 
 // Importação da biblioteca de mapa e o sub-componente "Marker"
 import MapView, { Marker } from "react-native-maps";
@@ -41,9 +41,11 @@ export default function App() {
           <Marker
             coordinate={localizacao} // Coordenada
             title="Você está aqui!" // Titulo ao clicar no marker
-            pinColor="blue" // Cor do pin
+            // pinColor="blue" // Cor do pin
             draggable // Arrastavel
-          />
+          >
+            <Image source={require("./assets/ghost.png")} />
+          </Marker>
         </MapView>
       </View>
     </>
