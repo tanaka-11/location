@@ -18,7 +18,7 @@ export default function App() {
   // State com localização atual do usuario iniciando nulo
   const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
 
-  // Efeito de permissão de localização do aparelho
+  // Efeito de permissão de localização do aparelho e coordenadas atuais
   useEffect(() => {
     async function obterLocalizacao() {
       // Guardando permissão em "status"
@@ -43,7 +43,7 @@ export default function App() {
 
   console.log(minhaLocalizacao);
 
-  // State com coordenadas fixas
+  // State que define a localização no MapView
   const [localizacao, setLocalizacao] = useState({
     latitude: -33.867886,
     longitude: -63.987,
