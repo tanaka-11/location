@@ -9,7 +9,7 @@ export default function App() {
     latitude: -10,
     longitude: -55,
 
-    // Zoom no Mapa, quanto menor mais proxima da localização escolhida e quanto mais mais longe da localização escolhida
+    // Zoom no Mapa, quanto menor o numero mais proxima da localização escolhida e quanto maior o numero mais longe da localização escolhida.
     latitudeDelta: 1,
     longitudeDelta: 1,
   };
