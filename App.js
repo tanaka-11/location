@@ -1,10 +1,42 @@
-import { useState } from "react";
-import { Image, StatusBar, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  Button,
+  Image,
+  StatusBar,
+  StyleSheet,
+  View,
+} from "react-native";
 
 // Importação da biblioteca de mapa e o sub-componente "Marker"
 import MapView, { Marker } from "react-native-maps";
 
+// Importação da biblioteca de localização
+import * as Location from "expo-location";
+
 export default function App() {
+  // State com localização em tempo real
+  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
+
+  // Efeito de permissão de localização do aparelho
+  useEffect(() => {
+    async function obterLocalizacao() {
+      // Guardando permissão em "status"
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      // Condicional para localização negada
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissão Necessária",
+          "Ative a localização para utilizar o app."
+        );
+        return;
+      }
+    }
+
+    obterLocalizacao();
+  }, []);
+
   // State com coordenadas fixas
   const [localizacao, setLocalizacao] = useState({
     latitude: -33.867886,
@@ -31,35 +63,41 @@ export default function App() {
   // Função com parametro de evento(onPress)
   const marcarLocal = (event) => {
     setLocalizacao({
-      ...localizacao, // Capturando os deltas
+      ...localizacao, // Capturando os deltas com o spread
 
       // Capturando novos dados de coordenadas a partir do evento(onPress)
       latitude: event.nativeEvent.coordinate.latitude,
       longitude: event.nativeEvent.coordinate.longitude,
     });
-
-    console.log(event.nativeEvent);
   };
 
   return (
     <>
       <StatusBar />
       <View style={estilos.container}>
-        <MapView
-          style={estilos.mapa}
-          onPress={marcarLocal} // Função
-          initialRegion={regiaoInicial} // Regiao Inicial
-          mapType="hybrid" // Tipo do mapa
-          maxZoomLevel={30} // Zoom maximo para usuario
-          minZoomLevel={5} // Zoom minimo para usuario
-        >
-          <Marker
-            coordinate={localizacao} // Coordenada
-            title="Você está aqui!" // Titulo ao clicar no marker
-            pinColor="blue" // Cor do pin
-            draggable // Arrastavel
+        <View style={estilos.viewBotao}>
+          <Button
+            title="Onde estou?"
+            onPress={marcarLocal} // Função de evento
           />
-        </MapView>
+        </View>
+
+        <View style={estilos.viewMapa}>
+          <MapView
+            style={estilos.mapa}
+            initialRegion={regiaoInicial} // Regiao Inicial
+            mapType="hybrid" // Tipo do mapa
+            maxZoomLevel={30} // Zoom maximo para usuario
+            minZoomLevel={5} // Zoom minimo para usuario
+          >
+            <Marker
+              coordinate={localizacao} // Coordenada
+              title="Você está aqui!" // Titulo ao clicar no marker
+              pinColor="blue" // Cor do pin
+              draggable // Arrastavel
+            />
+          </MapView>
+        </View>
       </View>
     </>
   );
@@ -74,4 +112,8 @@ const estilos = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+
+  viewBotao: {},
+
+  viewMapa: {},
 });
