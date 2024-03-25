@@ -15,7 +15,7 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 export default function App() {
-  // State com localização em tempo real
+  // State com localização atual do usuario iniciando nulo
   const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
 
   // Efeito de permissão de localização do aparelho
@@ -32,10 +32,16 @@ export default function App() {
         );
         return;
       }
+
+      // Obtendo dados da localização atual
+      let localizacaoAtual = await Location.getCurrentPositionAsync({});
+      setMinhaLocalizacao(localizacaoAtual);
     }
 
     obterLocalizacao();
   }, []);
+
+  console.log(minhaLocalizacao);
 
   // State com coordenadas fixas
   const [localizacao, setLocalizacao] = useState({
